@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nani Siripurapu | Data Analyst & AI Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #060910;
+    --surface: #0d1117;
+    --surface2: #111823;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e8edf5;
+    --muted: #8899aa;
+    --border: rgba(0,229,255,0.12);
+    --glow: 0 0 40px rgba(0,229,255,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ───── NOISE OVERLAY ───── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.4;
+  }
+
+  /* ───── GRID BG ───── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* ───── NAV ───── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw;
+    background: rgba(6,9,16,0.8);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ───── SECTIONS ───── */
+  section { position: relative; z-index: 1; }
+
+  /* ───── HERO ───── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 5vw 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .orb1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,229,255,0.12), transparent 70%); top: -100px; right: -100px; }
+  .orb2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(124,58,237,0.1), transparent 70%); bottom: 0; left: -100px; }
+
+  .hero-content { max-width: 700px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(0,229,255,0.07); border: 1px solid var(--border);
+    padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800; line-height: 1.0;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem; color: var(--muted);
+    max-width: 520px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-ctas {
+    display: flex; flex-wrap: wrap; gap: 1rem;
+    margin-top: 2.5rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.8rem; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: all 0.25s;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+  }
+  .btn-primary:hover { background: #33ecff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,229,255,0.3); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ───── SECTION TITLES ───── */
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-tag {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* ───── ABOUT ───── */
+  #about { padding: 7rem 5vw; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem;
+  }
+  .about-text { font-size: 1rem; color: var(--muted); line-height: 1.9; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .contact-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .contact-list .icon { color: var(--accent); font-size: 1rem; }
+  .contact-list a { color: var(--accent); text-decoration: none; }
+
+  /* ───── SKILLS ───── */
+  #skills { padding: 7rem 5vw; background: var(--surface); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .skill-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.8rem;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--glow); }
+  .skill-category { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.15);
+    color: var(--text); padding: 0.3rem 0.8rem;
+    border-radius: 6px; font-size: 0.8rem;
+  }
+
+  /* ───── PROJECTS ───── */
+  #projects { padding: 7rem 5vw; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2rem;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover { transform: translateY(-6px); border-color: rgba(0,229,255,0.3); box-shadow: var(--glow); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .project-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
+  .tech-badge {
+    background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2);
+    color: #a78bfa; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem;
+  }
+  .project-highlight {
+    border-color: rgba(0,229,255,0.25);
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(0,229,255,0.04) 100%);
+  }
+
+  /* ───── EXPERIENCE ───── */
+  #experience { padding: 7rem 5vw; background: var(--surface); }
+  .timeline { max-width: 800px; margin: 0 auto; position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .timeline-item { position: relative; padding-bottom: 3rem; padding-left: 2rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.5rem; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 12px rgba(0,229,255,0.5);
+  }
+  .timeline-date { font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .timeline-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .timeline-company { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+
+  /* ───── CERTIFICATIONS ───── */
+  #certifications { padding: 7rem 5vw; }
+  .certs-grid { display: flex; flex-wrap: wrap; gap: 1.2rem; justify-content: center; max-width: 900px; margin: 0 auto; }
+  .cert-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.2rem 1.8rem;
+    display: flex; align-items: center; gap: 1rem;
+    transition: all 0.25s;
+  }
+  .cert-card:hover { border-color: var(--accent3); transform: translateY(-3px); box-shadow: 0 0 30px rgba(245,158,11,0.1); }
+  .cert-icon { font-size: 1.5rem; }
+  .cert-name { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; }
+  .cert-org { font-size: 0.78rem; color: var(--muted); }
+
+  /* ───── EDUCATION ───── */
+  #education { padding: 7rem 5vw; background: var(--surface); }
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+  .edu-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.8rem;
+    transition: all 0.25s;
+  }
+  .edu-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .edu-year { font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .edu-degree { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .edu-school { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+  .edu-grade { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; background: rgba(0,229,255,0.07); border: 1px solid var(--border); padding: 0.2rem 0.7rem; border-radius: 100px; color: var(--accent); }
+
+  /* ───── ACHIEVEMENTS ───── */
+  #achievements { padding: 5rem 5vw; }
+  .achievement-card {
+    max-width: 700px; margin: 0 auto;
+    background: linear-gradient(135deg, var(--surface), rgba(124,58,237,0.1));
+    border: 1px solid rgba(124,58,237,0.3); border-radius: 20px; padding: 2.5rem;
+    text-align: center;
+  }
+  .achievement-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .achievement-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .achievement-desc { color: var(--muted); font-size: 0.95rem; }
+
+  /* ───── CONTACT ───── */
+  #contact { padding: 7rem 5vw; background: var(--surface); text-align: center; }
+  .contact-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2.5rem; }
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--bg); border: 1px solid var(--border);
+    color: var(--text); padding: 0.9rem 1.8rem; border-radius: 12px;
+    text-decoration: none; font-size: 0.9rem; transition: all 0.25s;
+  }
+  .contact-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); box-shadow: var(--glow); }
+
+  /* ───── FOOTER ───── */
+  footer {
+    padding: 2rem 5vw; text-align: center; border-top: 1px solid var(--border);
+    font-size: 0.8rem; color: var(--muted); z-index: 1; position: relative;
+  }
+
+  /* ───── ANIMATIONS ───── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NS.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:nanisiripurapu8@gmail.com" class="btn btn-primary" style="padding:0.5rem 1.2rem;font-size:0.82rem;">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Available for Opportunities</div>
+    <h1>Nani<br/><span>Siripurapu</span></h1>
+    <p class="hero-sub">Data Analyst & AI Developer crafting insights from data and intelligent systems that drive decisions.</p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+      <a href="mailto:nanisiripurapu8@gmail.com" class="btn btn-outline">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div>
+        <div class="stat-num">4</div>
+        <div class="stat-label">Internships</div>
+      </div>
+      <div>
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Certifications</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="section-tag">About Me</div>
+      <h2 style="margin-bottom:1.5rem;">Turning Data Into<br/>Decisions</h2>
+      <p class="about-text">
+        I'm a <strong>final-year B.Tech student</strong> specializing in Artificial Intelligence & Data Science at SITAM, Vizianagaram. I build end-to-end data pipelines, interactive dashboards, and AI-powered applications.<br/><br/>
+        My passion lies at the intersection of <strong>data analytics</strong>, <strong>machine learning</strong>, and <strong>generative AI</strong> — creating tools that make complex information accessible and actionable.
+      </p>
+    </div>
+    <div class="about-card reveal">
+      <div class="section-tag">Contact</div>
+      <ul class="contact-list">
+        <li><span class="icon">📧</span> <a href="mailto:nanisiripurapu8@gmail.com">nanisiripurapu8@gmail.com</a></li>
+        <li><span class="icon">📱</span> +91 9392502620</li>
+        <li><span class="icon">🔗</span> <a href="#">linkedin.com/in/nani-siripurapu</a></li>
+        <li><span class="icon">💻</span> <a href="#">github.com/nani-siripurapu</a></li>
+        <li><span class="icon">📍</span> Vizianagaram, Andhra Pradesh</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <div class="section-tag">Technical Arsenal</div>
+    <h2>Skills & Technologies</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-category">⌨️ Programming</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">📊 Data & ML</div>
+      <div class="skill-tags">
+        <span class="tag">Machine Learning</span>
+        <span class="tag">Power BI</span>
+        <span class="tag">Excel</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">NumPy</span>
+        <span class="tag">EDA</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">🤖 Gen AI & NLP</div>
+      <div class="skill-tags">
+        <span class="tag">Generative AI</span>
+        <span class="tag">NLP</span>
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">Chatbot Dev</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">🛠️ Tools & Platforms</div>
+      <div class="skill-tags">
+        <span class="tag">Git & GitHub</span>
+        <span class="tag">Jupyter Notebook</span>
+        <span class="tag">Google Colab</span>
+        <span class="tag">Cursor</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category">💼 Soft Skills</div>
+      <div class="skill-tags">
+        <span class="tag">Communication</span>
+        <span class="tag">Analytical Thinking</span>
+        <span class="tag">Problem Solving</span>
+        <span class="tag">Team Collaboration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-tag">Work</div>
+    <h2>Featured Projects</h2>
+  </div>
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 — AI Auto Email Sender (NEW) -->
+    <div class="project-card project-highlight reveal">
+      <div class="project-icon">✉️</div>
+      <div class="project-title">AI Automatic Email Sender</div>
+      <p class="project-desc">
+        An intelligent email automation system powered by Generative AI. Composes personalised, context-aware emails from a simple prompt, schedules bulk campaigns, and delivers them automatically — eliminating repetitive writing.
+        Integrates Gmail API with an LLM backend to generate subject lines and body content, with tone control (formal / casual / sales) and recipient segmentation.
+      </p>
+      <div class="project-tech">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">Generative AI</span>
+        <span class="tech-badge">Gmail API</span>
+        <span class="tech-badge">SMTP</span>
+        <span class="tech-badge">LangChain</span>
+        <span class="tech-badge">Prompt Engineering</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 — Banking -->
+    <div class="project-card reveal">
+      <div class="project-icon">🏦</div>
+      <div class="project-title">Banking Data Analytics Dashboard</div>
+      <p class="project-desc">
+        End-to-end banking analytics solution analysing loan trends and customer behaviour. Built data pipelines in Python and SQL, then visualised KPIs in an interactive Power BI dashboard that improved business decision-making.
+      </p>
+      <div class="project-tech">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">SQL</span>
+        <span class="tech-badge">Power BI</span>
+        <span class="tech-badge">Pandas</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 — Netflix -->
+    <div class="project-card reveal">
+      <div class="project-icon">🎬</div>
+      <div class="project-title">Netflix Content Analysis Report</div>
+      <p class="project-desc">
+        Performed exploratory data analysis on 8,800+ Netflix titles to uncover genre trends, country-wise content distribution, and release patterns. Delivered insights through a fully interactive Power BI dashboard.
+      </p>
+      <div class="project-tech">
+        <span class="tech-badge">Python</span>
+        <span class="tech-badge">Power BI</span>
+        <span class="tech-badge">EDA</span>
+        <span class="tech-badge">Data Visualization</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 — AR/VR Porsche (from internship) -->
+    <div class="project-card reveal">
+      <div class="project-icon">🚗</div>
+      <div class="project-title">Augmented 3D Car Showcase — Porsche</div>
+      <p class="project-desc">
+        Interactive 3D car showcase website with a Porsche model. Features 360-degree visualisation — rotate, zoom, explore car details — with realistic lighting and texture mapping powered by Three.js. Live demo available.
+      </p>
+      <div class="project-tech">
+        <span class="tech-badge">Three.js</span>
+        <span class="tech-badge">React.js</span>
+        <span class="tech-badge">AR/VR</span>
+        <span class="tech-badge">3D Rendering</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <div class="section-tag">Career</div>
+    <h2>Internship Experience</h2>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Jun 2025 – Nov 2025</div>
+      <div class="timeline-title">Data Science Intern</div>
+      <div class="timeline-company">Teks Academy</div>
+      <div class="timeline-desc">
+        Worked on end-to-end data science projects involving data collection, cleaning, exploratory data analysis, and building predictive machine learning models. Applied statistical techniques and Python libraries (Pandas, NumPy, Scikit-learn) to extract meaningful patterns from large datasets. Developed and evaluated classification and regression models, presenting findings through clear visualisations and reports to support data-driven decisions.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Feb 2026 – Mar 2026</div>
+      <div class="timeline-title">Data Analyst Intern</div>
+      <div class="timeline-company">CodeVeda</div>
+      <div class="timeline-desc">
+        Performed in-depth data analysis on real-world business datasets using Python and SQL. Cleaned and transformed raw data with Pandas and Power Query, conducted EDA to identify key trends, and built interactive Power BI dashboards to communicate actionable insights to stakeholders. Collaborated with the team to automate reporting workflows, reducing manual effort and improving data accuracy.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Jan 2025 – May 2025</div>
+      <div class="timeline-title">AR-VR Intern</div>
+      <div class="timeline-company">Augmented 3D Car Website for Porsche</div>
+      <div class="timeline-desc">
+        Developed an interactive 3D car showcase website using Three.js for real-time rendering. Integrated 360° car visualisation with rotation, zoom, and feature exploration backed by realistic lighting and texture mapping. Managed UI components using React.js to optimise site performance.
+      </div>
+    </div>
+    <div class="timeline-item reveal">
+      <div class="timeline-date">May 2024 – Jun 2024</div>
+      <div class="timeline-title">AI & ML Intern</div>
+      <div class="timeline-company">APSSDC</div>
+      <div class="timeline-desc">
+        Built and optimised sentiment analysis models using ML techniques with Python. Leveraged Scikit-learn, Pandas, and NLTK for data preprocessing and analysis, delivering a production-grade NLP pipeline.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header reveal">
+    <div class="section-tag">Credentials</div>
+    <h2>Certifications</h2>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon">📊</div>
+      <div>
+        <div class="cert-name">Power BI</div>
+        <div class="cert-org">Simplilearn</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🐍</div>
+      <div>
+        <div class="cert-name">Python</div>
+        <div class="cert-org">HackerRank</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🗄️</div>
+      <div>
+        <div class="cert-name">SQL</div>
+        <div class="cert-org">Aajhub</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🔬</div>
+      <div>
+        <div class="cert-name">Data Science</div>
+        <div class="cert-org">Teks Academy</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">📈</div>
+      <div>
+        <div class="cert-name">Data Analyst</div>
+        <div class="cert-org">CodeVeda</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <div class="section-tag">Academic Background</div>
+    <h2>Education</h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-year">2021 – 2025</div>
+      <div class="edu-degree">B.Tech — AI & Data Science</div>
+      <div class="edu-school">Satya Institute of Technology & Management, Vizianagaram</div>
+      <div class="edu-grade">⭐ 7.83 CGPA</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-year">2019 – 2021</div>
+      <div class="edu-degree">Intermediate — MPC</div>
+      <div class="edu-school">Narayana Junior College, Vijayawada</div>
+      <div class="edu-grade">⭐ 79.3%</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-year">2018 – 2019</div>
+      <div class="edu-degree">SSC</div>
+      <div class="edu-school">Govt High School, Cheepurupalli</div>
+      <div class="edu-grade">⭐ 9.2 CGPA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="achievement-card reveal">
+    <div class="achievement-icon">🏆</div>
+    <div class="achievement-title">Hackathon Participant</div>
+    <p class="achievement-desc">
+      Participated in a Hackathon organised by Brainovision Solutions India Pvt. Ltd. at SITAM College, focused on real-world tech solutions and collaborative development.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div class="section-tag">Let's Connect</div>
+    <h2>Get In Touch</h2>
+    <p style="color:var(--muted);margin-top:1rem;max-width:450px;margin-left:auto;margin-right:auto;">Open to full-time roles, freelance projects, and collaborations in Data Analytics, ML, and AI.</p>
+  </div>
+  <div class="contact-grid reveal">
+    <a href="mailto:nanisiripurapu8@gmail.com" class="contact-btn">📧 nanisiripurapu8@gmail.com</a>
+    <a href="tel:+919392502620" class="contact-btn">📱 +91 9392502620</a>
+    <a href="#" class="contact-btn">🔗 LinkedIn</a>
+    <a href="#" class="contact-btn">💻 GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed & built by <strong style="color:var(--accent)">Nani Siripurapu</strong> · 2025 · Data Analyst & AI Developer</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Navbar active link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
